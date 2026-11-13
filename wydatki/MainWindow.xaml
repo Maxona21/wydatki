@@ -1,0 +1,66 @@
+﻿<Window x:Class="wydatki.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:wydatki"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="Kwota:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <TextBox Text="{Binding Kwota, UpdateSourceTrigger=PropertyChanged}" Width="70" Margin="0,0,10,0"/>
+
+            <TextBlock Text="Kategoria:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <ComboBox ItemsSource="{Binding DostepneKategorie}" SelectedItem="{Binding Kategoria}" Width="100" Margin="0,0,10,0"/>
+
+            <TextBlock Text="Data:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <DatePicker SelectedDate="{Binding Data}" Margin="0,0,10,0"/>
+
+            <TextBlock Text="Opis:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <TextBox Text="{Binding Opis}" Width="150" Margin="0,0,10,0"/>
+
+            <Button Content="Dodaj wydatek" Command="{Binding DodajCommand}" Padding="10,2"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="Filtruj miesiąc (0 = wszystkie):" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <ComboBox ItemsSource="{Binding Miesiace}" SelectedItem="{Binding WybranyMiesiac}" Width="60"/>
+        </StackPanel>
+
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <DataGrid ItemsSource="{Binding WidoczneWydatki}" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,0,10,0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Data" Binding="{Binding Data, StringFormat=dd.MM.yyyy}" Width="90"/>
+                    <DataGridTextColumn Header="Kategoria" Binding="{Binding Kategoria}" Width="100"/>
+                    <DataGridTextColumn Header="Kwota" Binding="{Binding Kwota, StringFormat='{}{0:N2} zł'}" Width="90" />
+                    <DataGridTextColumn Header="Opis" Binding="{Binding Opis}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <GroupBox Grid.Column="1" Header="Według kategorii">
+                <ListBox ItemsSource="{Binding PodsumowanieKategorii}" BorderThickness="0"/>
+            </GroupBox>
+        </Grid>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+            <TextBlock Text="Suma wydatków: " FontWeight="Bold" FontSize="14"/>
+            <TextBlock Text="{Binding SumaWydatkow, StringFormat=C}" FontWeight="Bold" FontSize="14"/>
+        </StackPanel>
+    </Grid>
+</Window>
